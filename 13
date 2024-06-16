@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_TEXT_LENGTH 1000
+char text[MAX_TEXT_LENGTH] = "";
+char clipboard[MAX_TEXT_LENGTH] = "";
+void cut(int start, int end) {
+    strncpy(clipboard, text + start, end - start);
+    strcpy(text + start, text + end);
+}
+void copy(int start, int end) {
+    strncpy(clipboard, text + start, end - start);
+}
+void paste(int index) {
+    int clipboard_len = strlen(clipboard);
+    memmove(text + index + clipboard_len, text + index, strlen(text) - index + 1);
+    strncpy(text + index, clipboard, clipboard_len);
+}
+int main() {
+    int choice;
+    int start, end;
+    printf("Enter text (max %d characters):\n", MAX_TEXT_LENGTH - 1);
+    fgets(text, sizeof(text), stdin);
+    text[strcspn(text, "\n")] = '\0'; 
+    while (1) {
+        printf("\n1. Cut\n2. Copy\n3. Paste\n4. Exit\nEnter your choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter start and end indices to cut (0 to %lu): ", strlen(text) - 1);
+                scanf("%d %d", &start, &end);
+                cut(start, end);
+                printf("Text after cut: %s\n", text);
+                break;
+            case 2:
+                printf("Enter start and end indices to copy (0 to %lu): ", strlen(text) - 1);
+                scanf("%d %d", &start, &end);
+                copy(start, end);
+                printf("Text copied: %s\n", clipboard);
+                break;
+            case 3:
+                printf("Enter index to paste (0 to %lu): ", strlen(text) - 1);
+                scanf("%d", &start);
+                paste(start);
+                printf("Text after paste: %s\n", text);
+                break;
+            case 4:
+                printf("Exiting...\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please enter again.\n");
+        }
+    }
+
+    return 0;
+}
