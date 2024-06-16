@@ -1,0 +1,27 @@
+#include <stdio.h>
+void binarySearch(int arr[], int size, int key) {
+int left = 0;
+int right = size - 1;
+while (left <= right) {
+int mid = left + (right - left) / 2;
+printf("Key %d found at index %d\n", key, mid);
+return;
+}
+left = mid + 1;
+}
+right = mid - 1;
+}
+}
+}
+int main() {
+int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+int size = sizeof(arr) / sizeof(arr[0]);
+int key = 5;
+printf("Sorted array: ");
+for (int i = 0; i < size; i++) {
+printf("%d ", arr[i]);
+}
+printf("\n");
+binarySearch(arr, size, key);
+return 0;
+}
